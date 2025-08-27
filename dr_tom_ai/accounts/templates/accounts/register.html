@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %} — Register{% endblock %}
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 rounded-xl p-4">
+
+  <div class="max-w-md w-full bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-gray-100" data-aos="zoom-in">
+
+    <!-- Heading -->
+    <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">
+      <i class="fa-solid fa-user-plus mr-2 text-blue-600"></i> Create Account
+    </h1>
+    <p class="text-center text-gray-500 mb-6">Join <span class="font-semibold text-blue-600">Dr. Tom AI</span> today 🚀</p>
+
+    <!-- Register Form -->
+    <form method="post" class="space-y-5">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <!-- Username -->
+      <div class="relative">
+        <i class="fa-solid fa-user absolute top-3 left-3 text-gray-400"></i>
+        {{ form.username|add_class:"w-full pl-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Username" }}
+      </div>
+
+      <!-- Email -->
+      <div class="relative">
+        <i class="fa-solid fa-envelope absolute top-3 left-3 text-gray-400"></i>
+        {{ form.email|add_class:"w-full pl-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Email Address" }}
+      </div>
+
+      <!-- Password -->
+      <div class="relative">
+        <i class="fa-solid fa-lock absolute top-3 left-3 text-gray-400"></i>
+        {{ form.password1|add_class:"w-full pl-10 pr-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Password" }}
+        <button type="button" onclick="togglePassword('id_password1','toggleIcon1')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+          <i id="toggleIcon1" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="relative">
+        <i class="fa-solid fa-lock absolute top-3 left-3 text-gray-400"></i>
+        {{ form.password2|add_class:"w-full pl-10 pr-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Confirm Password" }}
+        <button type="button" onclick="togglePassword('id_password2','toggleIcon2')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+          <i id="toggleIcon2" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+      <!-- Submit Button -->
+      <button class="w-full rounded-xl bg-blue-600 text-white font-semibold py-3 hover:bg-blue-700 shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
+        <i class="fa-solid fa-user-plus mr-2"></i>Create Account
+      </button>
+    </form>
+
+    <!-- Login Link -->
+    <p class="text-sm text-slate-600 mt-6 text-center">
+      Already have an account? 
+      <a class="text-blue-600 hover:underline font-semibold" href="{% url 'login' %}">Login</a>
+    </p>
+
+  </div>
+</div>
+
+{% block scripts %}
+<script>
+  function togglePassword(fieldId, iconId) {
+    const field = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+    if (field.type === "password") {
+      field.type = "text";
+      icon.classList.remove("fa-eye");
+      icon.classList.add("fa-eye-slash");
+    } else {
+      field.type = "password";
+      icon.classList.remove("fa-eye-slash");
+      icon.classList.add("fa-eye");
+    }
+  }
+</script>
+{% endblock %}
+{% endblock %}

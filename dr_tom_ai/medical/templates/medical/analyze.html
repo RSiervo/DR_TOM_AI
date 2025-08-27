@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %} — Analyze{% endblock %}
+
+{% block content %}
+<section class="grid md:grid-cols-2 gap-10 items-start py-6">
+
+  <!-- Hero / Explainer -->
+  <div data-aos="fade-right">
+    <h1 class="text-4xl font-extrabold mb-4 text-gray-800">
+      <i class="fa-solid fa-stethoscope text-blue-600 mr-2"></i> Symptom & Image Analyzer
+    </h1>
+    <p class="text-slate-600 mb-6 leading-relaxed">
+      Dr. Tom AI uses <span class="font-semibold text-blue-600">Gemini 1.5 Flash</span> to analyze your description and (optionally) a photo.  
+      You’ll get <span class="font-semibold">possible causes</span>, <span class="font-semibold">self-care tips</span>,  
+      <span class="font-semibold">red flags</span>, and <span class="font-semibold">next steps</span>.
+    </p>
+    <ul class="space-y-3 text-slate-700">
+      <li><i class="fa-solid fa-bolt mr-2 text-blue-600"></i>Fast, multimodal AI analysis</li>
+      <li><i class="fa-solid fa-shield-heart mr-2 text-blue-600"></i>Your data stays private</li>
+      <li><i class="fa-solid fa-circle-info mr-2 text-blue-600"></i><strong>Not a diagnosis</strong> — educational only</li>
+    </ul>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl shadow-xl p-6" data-aos="fade-left">
+    <form method="post" enctype="multipart/form-data" class="space-y-5">
+      {% csrf_token %}
+
+      <!-- Symptom Input -->
+      <div>
+        <label class="font-semibold block mb-1">Describe your symptoms (optional)</label>
+        <textarea 
+          name="symptoms_text"
+          placeholder="e.g. Red rash on arm, itchy for 2 days"
+          rows="4"
+          class="w-full border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition resize-none"></textarea>
+      </div>
+
+      <!-- Image Upload -->
+      <div>
+        <label class="font-semibold block mb-1">Upload a photo (optional)</label>
+        <div id="dropzone" class="border-2 border-dashed rounded-xl p-5 text-center hover:bg-slate-50 transition cursor-pointer">
+          <input id="imageInput" type="file" name="image" accept="image/*" class="hidden">
+          <p class="text-sm text-slate-600"><i class="fa-regular fa-image mr-1"></i> Drag & drop or click to upload</p>
+          <img id="preview" class="mt-4 max-h-64 mx-auto rounded-xl hidden shadow-md" alt="Preview">
+        </div>
+        <p class="text-xs text-slate-500 mt-2">💡 Use clear photos in good lighting, avoid personal identifiers.</p>
+      </div>
+
+      <!-- Analyze Button -->
+      <button id="analyzeBtn" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white font-semibold py-3 hover:bg-blue-700 shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
+        <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze
+      </button>
+
+      <!-- Loading Spinner -->
+      <div id="loading" class="hidden text-center mt-4 text-blue-600">
+        <i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing your input...
+      </div>
+    </form>
+  </div>
+</section>
+
+{% if result %}
+<section class="mt-12" data-aos="fade-up">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800"><i class="fa-solid fa-clipboard-list mr-2 text-blue-600"></i> Results</h2>
+  <article class="prose max-w-none bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-gray-100">
+    {{ result|linebreaks }}
+  </article>
+</section>
+{% endif %}
+
+{% block scripts %}
+<script>
+  const drop = document.getElementById('dropzone');
+  const input = document.getElementById('imageInput');
+  const preview = document.getElementById('preview');
+  const analyzeBtn = document.getElementById('analyzeBtn');
+  const loading = document.getElementById('loading');
+
+  // Dropzone click
+  drop.addEventListener('click', () => input.click());
+
+  // Drag highlight
+  ['dragenter','dragover'].forEach(evt => 
+    drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.add('bg-slate-50'); })
+  );
+  ['dragleave','drop'].forEach(evt => 
+    drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.remove('bg-slate-50'); })
+  );
+
+  // Handle drop
+  drop.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) { input.files = e.dataTransfer.files; showPreview(file); }
+  });
+
+  // Handle file input
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (file) showPreview(file);
+  });
+
+  function showPreview(file){
+    const reader = new FileReader();
+    reader.onload = e => { 
+      preview.src = e.target.result; 
+      preview.classList.remove('hidden'); 
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Show loading when analyzing
+  analyzeBtn.addEventListener('click', () => {
+    loading.classList.remove('hidden');
+  });
+</script>
+{% endblock %}
+{% endblock %}

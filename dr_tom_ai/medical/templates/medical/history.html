@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %} — History{% endblock %}
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-4">
+  <h1 class="text-3xl font-bold mb-8 text-slate-800 flex items-center gap-3">
+    <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
+    Recent Consultations
+  </h1>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    {% for c in items %}
+    <div class="bg-white rounded-2xl shadow hover:shadow-lg transition p-6" data-aos="fade-up">
+      
+      <!-- Top meta -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="text-sm text-slate-500">
+          <i class="fa-regular fa-clock mr-2"></i>{{ c.created_at|date:"M d, Y H:i" }}
+        </div>
+        {% if c.image %}
+        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+          <i class="fa-regular fa-image mr-1"></i> Image
+        </span>
+        {% endif %}
+      </div>
+
+      <!-- Symptoms -->
+      {% if c.symptoms_text %}
+      <div class="mb-3">
+        <p class="text-sm">
+          <span class="font-semibold text-slate-700">🩺 Symptoms:</span><br>
+          <span class="text-slate-600">{{ c.symptoms_text|truncatechars:160 }}</span>
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Result -->
+      {% if c.result_text %}
+      <div class="mb-4">
+        <p class="text-sm">
+          <span class="font-semibold text-slate-700">📋 Result:</span><br>
+          <span class="text-slate-800 whitespace-pre-line">{{ c.result_text|truncatechars:300 }}</span>
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Actions -->
+      <div class="flex flex-wrap gap-2 mt-4">
+        <a href="{{ c.get_absolute_url }}"
+           class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition">
+          <i class="fa-regular fa-file-lines"></i> View details
+        </a>
+        <a href="{% url 'consultation_pdf' c.id %}"
+           class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition">
+          <i class="fa-solid fa-file-arrow-down"></i> Download PDF
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-span-2 text-center text-slate-500 py-12">
+      <i class="fa-regular fa-folder-open text-5xl mb-3 text-slate-400"></i>
+      <p class="text-lg">No consultations yet.</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

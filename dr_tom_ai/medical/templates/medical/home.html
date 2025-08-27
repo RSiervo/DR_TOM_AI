@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block title %} — Smart Medical Companion{% endblock %}
+
+{% block content %}
+<!-- Container wrapper for consistent padding -->
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+  <!-- Hero Section -->
+  <section class="grid lg:grid-cols-2 gap-12 items-center mt-10">
+    <!-- Left Text -->
+    <div data-aos="fade-right">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-6">
+        Meet <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Dr. Tom AI</span>  
+        <br class="hidden md:block"/> your smart medical companion
+      </h1>
+      <p class="text-base sm:text-lg text-slate-600 mb-8">
+        Describe symptoms or upload a photo. Get likely causes, self-care tips, red flags,  
+        and next steps — powered by <span class="font-semibold">Gemini 1.5 Flash</span>.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-wrap gap-4">
+        <a href="{% url 'analyze' %}"
+          class="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white font-semibold px-6 py-3 shadow hover:bg-blue-700 hover:scale-105 transform transition">
+          <i class="fa-solid fa-stethoscope"></i> Start analyzing
+        </a>
+        <a href="{% url 'history' %}"
+          class="inline-flex items-center gap-2 rounded-xl bg-white border border-slate-200 px-6 py-3 shadow-sm hover:shadow-md hover:bg-slate-50 transition">
+          <i class="fa-regular fa-clock"></i> View history
+        </a>
+      </div>
+
+      <p class="text-xs text-slate-500 mt-4">
+        <i class="fa-solid fa-triangle-exclamation mr-1"></i> For educational purposes only — not a diagnosis.
+      </p>
+    </div>
+
+    <!-- Right Image -->
+    <div class="relative" data-aos="fade-left">
+      <div class="rounded-3xl bg-gradient-to-br from-blue-50 to-blue-100 p-2 shadow-xl">
+        <img class="rounded-2xl w-full h-auto object-cover"
+             src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600"
+             alt="Medical illustration">
+      </div>
+
+      <!-- Floating Badge -->
+      <div class="absolute -bottom-6 right-0 sm:-right-6 bg-white rounded-2xl shadow-lg p-4 flex items-center gap-2 animate-bounce w-max">
+        <i class="fa-solid fa-bolt text-blue-600"></i>
+        <span class="text-sm font-medium">Fast, multimodal analysis</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="mt-24">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12" data-aos="fade-up">
+      How does <span class="text-blue-600">Dr. Tom AI</span> work?
+    </h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <!-- Step 1 -->
+      <div class="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition" data-aos="fade-up">
+        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-xl bg-blue-100 text-blue-600 text-xl">
+          <i class="fa-solid fa-keyboard"></i>
+        </div>
+        <h3 class="font-semibold mb-2">1. Describe</h3>
+        <p class="text-sm text-slate-600">Enter your symptoms or upload a photo securely.</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-xl bg-green-100 text-green-600 text-xl">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3 class="font-semibold mb-2">2. Analyze</h3>
+        <p class="text-sm text-slate-600">Our AI reviews and highlights possible causes, risks, and advice.</p>
+      </div>
+      <!-- Step 3 -->
+      <div class="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-xl bg-purple-100 text-purple-600 text-xl">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 class="font-semibold mb-2">3. Get Guidance</h3>
+        <p class="text-sm text-slate-600">Receive tailored insights: self-care, red flags, and next steps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="mt-24">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12" data-aos="fade-up">
+      Why choose <span class="text-blue-600">Dr. Tom AI</span>?
+    </h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition" data-aos="fade-up">
+        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-xl bg-blue-100 text-blue-600 text-xl">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <h3 class="font-semibold mb-2">AI-Powered Insights</h3>
+        <p class="text-sm text-slate-600">Advanced multimodal analysis of text & images using Gemini 1.5 Flash.</p>
+      </div>
+      <!-- Feature 2 -->
+      <div class="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-xl bg-green-100 text-green-600 text-xl">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="font-semibold mb-2">Privacy First</h3>
+        <p class="text-sm text-slate-600">Your data stays secure — we prioritize consent, safety, and transparency.</p>
+      </div>
+      <!-- Feature 3 -->
+      <div class="bg-white rounded-2xl shadow p-6 text-center hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center rounded-xl bg-pink-100 text-pink-600 text-xl">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <h3 class="font-semibold mb-2">Health Guidance</h3>
+        <p class="text-sm text-slate-600">Get red-flag alerts, lifestyle tips, and recommendations for next steps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="mt-24 mb-12">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12" data-aos="fade-up">
+      Trusted by early users ❤️
+    </h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <!-- Testimonial 1 -->
+      <div class="bg-white rounded-2xl shadow p-6" data-aos="fade-up">
+        <p class="text-slate-600 italic mb-4">“I uploaded a rash photo and got guidance instantly. It even told me when to see a doctor. Super helpful!”</p>
+        <p class="text-sm font-semibold text-slate-800">— Sarah L.</p>
+      </div>
+      <!-- Testimonial 2 -->
+      <div class="bg-white rounded-2xl shadow p-6" data-aos="fade-up" data-aos-delay="100">
+        <p class="text-slate-600 italic mb-4">“The red-flag alerts make me feel safer. It’s like having a doctor friend available 24/7.”</p>
+        <p class="text-sm font-semibold text-slate-800">— Mark R.</p>
+      </div>
+      <!-- Testimonial 3 -->
+      <div class="bg-white rounded-2xl shadow p-6" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-slate-600 italic mb-4">“Clean design, fast responses, and really accurate. Definitely recommending to friends.”</p>
+        <p class="text-sm font-semibold text-slate-800">— Priya K.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developer Section -->
+  <section class="mt-24 mb-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12" data-aos="fade-up">
+      Meet the <span class="text-blue-600">Developer</span>
+    </h2>
+    <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg p-6 sm:p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 hover:shadow-xl transition" data-aos="fade-up">
+      
+      <!-- Profile Image -->
+      <div class="flex-shrink-0">
+        <img src="https://i.ibb.co/qYt8shL/profile.png" alt="Developer Photo"
+             class="w-32 sm:w-40 h-32 sm:h-40 rounded-full shadow-md border-4 border-blue-100 object-cover">
+      </div>
+
+      <!-- Developer Bio -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-astronaut text-blue-600"></i>
+          Rostom A. Siervo
+        </h3>
+        <p class="text-slate-600 mt-2 text-sm sm:text-base">
+          Full-Stack Developer & AI Innovator 🚀  
+          Passionate about building modern, AI-powered solutions like <strong>Dr. Tom AI</strong>  
+          to improve healthcare accessibility and digital transformation.
+        </p>
+
+        <!-- Skills -->
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600">Python</span>
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600">Django</span>
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-600">AI/ML</span>
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600">Web Dev</span>
+        </div>
+
+        <!-- Social Links -->
+        <div class="mt-5 flex gap-4">
+          <a href="mailto:rostom@example.com" class="text-blue-600 hover:text-blue-800 transition text-lg">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+          <a href="https://github.com/yourgithub" target="_blank" class="text-slate-800 hover:text-black transition text-lg">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/yourlinkedin" target="_blank" class="text-blue-700 hover:text-blue-900 transition text-lg">
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %} — Login{% endblock %}
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 rounded-xl p-4">
+
+  <div class="max-w-md w-full bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-gray-100" data-aos="zoom-in">
+
+    <!-- Heading with Icon -->
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+      <i class="fa-solid fa-right-to-bracket mr-2 text-blue-600"></i> Welcome Back
+    </h1>
+    <p class="text-center text-gray-500 mb-6">Login to continue to <span class="font-semibold text-blue-600">Dr. Tom AI</span></p>
+
+    <!-- Login Form -->
+    <form method="post" class="space-y-5">
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="relative">
+        <i class="fa-solid fa-user text-gray-400 absolute top-3 left-3"></i>
+        <input 
+          type="text" 
+          name="username" 
+          placeholder="Enter your username" 
+          class="w-full border rounded-xl pl-10 pr-3 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+          required>
+      </div>
+
+      <!-- Password with Show/Hide -->
+      <div class="relative">
+        <i class="fa-solid fa-lock text-gray-400 absolute top-3 left-3"></i>
+        <input 
+          id="passwordField"
+          type="password" 
+          name="password" 
+          placeholder="Enter your password" 
+          class="w-full border rounded-xl pl-10 pr-10 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+          required>
+        <button type="button" onclick="togglePassword()" 
+          class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+          <i id="toggleIcon" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+
+      <!-- Login Button -->
+      <button 
+        class="w-full rounded-xl bg-blue-600 text-white font-semibold py-3 hover:bg-blue-700 shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
+        <i class="fa-solid fa-sign-in-alt mr-2"></i> Login
+      </button>
+    </form>
+
+    <!-- Register Link -->
+    <p class="text-sm text-slate-600 mt-6 text-center">
+      Don’t have an account? 
+      <a class="text-blue-600 font-medium hover:underline" href="{% url 'register' %}">
+        Register here
+      </a>
+    </p>
+
+  </div>
+</div>
+
+{% block scripts %}
+<script>
+  function togglePassword() {
+    const field = document.getElementById("passwordField");
+    const icon = document.getElementById("toggleIcon");
+    if (field.type === "password") {
+      field.type = "text";
+      icon.classList.remove("fa-eye");
+      icon.classList.add("fa-eye-slash");
+    } else {
+      field.type = "password";
+      icon.classList.remove("fa-eye-slash");
+      icon.classList.add("fa-eye");
+    }
+  }
+</script>
+{% endblock %}
+{% endblock %}
