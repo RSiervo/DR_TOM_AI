@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-secret-key")  # Railway will store 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Allow Railway domains + local dev
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1 localhost").split()
+ALLOWED_HOSTS = ['*', 'dr-tomai.up.railway.app']
 
 # ------------------------------------------------
 # 📦 Installed apps
