@@ -13,7 +13,13 @@ SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-secret-key")  # Railway will store 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Allow Railway domains + local dev
-ALLOWED_HOSTS = ['*', 'dr-tomai.up.railway.app']
+#ALLOWED_HOSTS = ['*', 'dr-tomai.up.railway.app']
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "https://" + os.environ.get("RAILWAY_STATIC_URL", "dr-tomai.up.railway.app"),
+]
+
 
 # ------------------------------------------------
 # 📦 Installed apps
