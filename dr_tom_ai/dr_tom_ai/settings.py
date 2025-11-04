@@ -75,9 +75,8 @@ WSGI_APPLICATION = 'dr_tom_ai.wsgi.application'
 # ------------------------------------------------
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-        conn_max_age=600,
-        ssl_require=True
+        default=f"postgresql://postgres:{os.getenv('SUPABASE_PASSWORD')}@{os.getenv('SUPABASE_HOST')}:5432/postgres",
+        conn_max_age=600, ssl_require=True
     )
 }
 
