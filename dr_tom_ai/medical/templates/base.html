@@ -19,19 +19,21 @@
   <!-- AOS Animations -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
 
-  <!-- Alpine.js (for dropdowns) -->
+  <!-- Alpine.js -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   <style>
-    html,body{font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    html,body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .glass { backdrop-filter: blur(8px); background: rgba(255,255,255,0.7); }
   </style>
   {% block head %}{% endblock %}
 </head>
 <body class="bg-slate-50 text-slate-800">
+
   <!-- Navbar -->
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur shadow-sm">
-    <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between" x-data="{ open: false }">
+      
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3">
         <span class="inline-flex h-10 w-10 rounded-2xl bg-blue-600 text-white items-center justify-center">
@@ -40,8 +42,8 @@
         <span class="text-xl font-bold">Dr. Tom <span class="text-blue-600">AI</span></span>
       </a>
 
-      <!-- Nav Links -->
-      <div class="flex items-center gap-6">
+      <!-- Desktop Nav Links -->
+      <div class="hidden md:flex items-center gap-6">
         <a href="{% url 'analyze' %}" class="hover:text-blue-600 transition">
           <i class="fa-solid fa-magnifying-glass-chart mr-2"></i>Analyze
         </a>
@@ -50,8 +52,8 @@
         </a>
 
         <!-- Auth Dropdown -->
-        <div x-data="{ open: false }" class="relative">
-          <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-100 transition">
+        <div x-data="{ dropdown: false }" class="relative">
+          <button @click="dropdown = !dropdown" class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-100 transition">
             {% if request.user.is_authenticated %}
               <i class="fa-regular fa-user text-blue-600"></i>
               <span class="hidden sm:inline">{{ request.user.username }}</span>
@@ -62,12 +64,10 @@
               <i class="fa-solid fa-chevron-down text-xs"></i>
             {% endif %}
           </button>
-
           <!-- Dropdown Menu -->
-          <div x-show="open" @click.away="open = false"
+          <div x-show="dropdown" @click.away="dropdown = false"
                x-transition
                class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-2 z-50">
-
             {% if request.user.is_authenticated %}
               <a href="{% url 'history' %}" class="block px-4 py-2 hover:bg-slate-50">
                 <i class="fa-regular fa-clock mr-2"></i> My History
@@ -86,7 +86,39 @@
           </div>
         </div>
       </div>
+
+      <!-- Mobile Hamburger -->
+      <button @click="open = !open" class="md:hidden text-2xl focus:outline-none">
+        <i class="fa-solid" :class="open ? 'fa-xmark' : 'fa-bars'"></i>
+      </button>
     </nav>
+
+    <!-- Mobile Nav -->
+    <div x-show="open" class="md:hidden bg-white shadow-lg border-t border-slate-100">
+      <div class="flex flex-col p-4 space-y-3">
+        <a href="{% url 'analyze' %}" class="hover:text-blue-600 transition">
+          <i class="fa-solid fa-magnifying-glass-chart mr-2"></i>Analyze
+        </a>
+        <a href="{% url 'history' %}" class="hover:text-blue-600 transition">
+          <i class="fa-regular fa-clock mr-2"></i>History
+        </a>
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'history' %}" class="hover:text-blue-600 transition">
+            <i class="fa-regular fa-clock mr-2"></i>My History
+          </a>
+          <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-800 transition">
+            <i class="fa-solid fa-right-from-bracket mr-2"></i>Logout
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}" class="hover:text-blue-600 transition">
+            <i class="fa-solid fa-right-to-bracket mr-2"></i>Login
+          </a>
+          <a href="{% url 'register' %}" class="hover:text-blue-600 transition">
+            <i class="fa-regular fa-id-badge mr-2"></i>Register
+          </a>
+        {% endif %}
+      </div>
+    </div>
   </header>
 
   <!-- Flash messages -->
@@ -106,17 +138,24 @@
   </main>
 
   <!-- Footer -->
-  <footer class="mt-12 py-8 bg-white">
-    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-4 items-center">
-      <p class="text-sm text-slate-500">
-        © {{ now|date:"Y" }} Dr. Tom AI. All rights reserved.
-      </p>
-      <p class="text-sm text-slate-500 md:text-right">
-        <i class="fa-solid fa-triangle-exclamation mr-2"></i>
-        Educational information only — not a medical diagnosis. Seek professional care for urgent issues.
-      </p>
-    </div>
-  </footer>
+<footer class="mt-16 border-t border-gray-200 bg-white">
+  <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+    <p class="text-sm text-slate-600">
+      © {{ now|date:"Y" }} <span class="font-semibold text-slate-800">Dr. Tom AI</span>. All rights reserved.
+    </p>
+    <p class="flex items-center justify-center text-sm text-slate-500">
+      <i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2"></i>
+      <span>Educational purposes only — not a medical diagnosis.</span>
+    </p>
+  </div>
+
+  <div class="text-center mt-4 text-xs text-slate-400">
+    <a href="#" class="hover:text-slate-600 transition">Privacy Policy</a> ·
+    <a href="#" class="hover:text-slate-600 transition">Terms of Use</a> ·
+    <a href="#" class="hover:text-slate-600 transition">Contact</a>
+  </div>
+</footer>
+
 
   <!-- Consent Modal -->
   <div id="consentModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-[1000]">
@@ -153,12 +192,10 @@
       if (!localStorage.getItem("consentGiven")) {
         document.getElementById("consentModal").classList.remove("hidden");
       }
-
       document.getElementById("agreeBtn").addEventListener("click", function() {
         localStorage.setItem("consentGiven", true);
         document.getElementById("consentModal").classList.add("hidden");
       });
-
       document.getElementById("declineBtn").addEventListener("click", function() {
         alert("You must accept consent to use Dr. Tom AI.");
         window.location.href = "https://www.google.com";

@@ -1,50 +1,78 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block title %} — Register{% endblock %}
+
 {% block content %}
 <div class="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 rounded-xl p-4">
 
-  <div class="max-w-md w-full bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-gray-100" data-aos="zoom-in">
+  <div id="formCard" class="max-w-md w-full bg-white/70 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-gray-100" data-aos="zoom-in">
 
     <!-- Heading -->
-    <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">
+    <h1 class="text-3xl font-extrabold mb-4 text-center text-gray-900">
       <i class="fa-solid fa-user-plus mr-2 text-blue-600"></i> Create Account
     </h1>
     <p class="text-center text-gray-500 mb-6">Join <span class="font-semibold text-blue-600">Dr. Tom AI</span> today 🚀</p>
 
     <!-- Register Form -->
-    <form method="post" class="space-y-5">
+    <form id="registerForm" method="post" class="space-y-6">
       {% csrf_token %}
       {{ form.non_field_errors }}
 
       <!-- Username -->
       <div class="relative">
         <i class="fa-solid fa-user absolute top-3 left-3 text-gray-400"></i>
-        {{ form.username|add_class:"w-full pl-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Username" }}
+        {{ form.username|add_class:"peer w-full pl-10 border rounded-xl px-3 pt-5 pb-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder: " }}
+        <label for="id_username" class="absolute left-10 top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-blue-600">
+          Username
+        </label>
+        {% if form.username.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.username.errors.0 }}</p>
+        {% endif %}
       </div>
 
       <!-- Email -->
       <div class="relative">
         <i class="fa-solid fa-envelope absolute top-3 left-3 text-gray-400"></i>
-        {{ form.email|add_class:"w-full pl-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Email Address" }}
+        {{ form.email|add_class:"peer w-full pl-10 border rounded-xl px-3 pt-5 pb-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder: " }}
+        <label for="id_email" class="absolute left-10 top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-blue-600">
+          Email Address
+        </label>
+        {% if form.email.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+        {% endif %}
       </div>
 
       <!-- Password -->
       <div class="relative">
         <i class="fa-solid fa-lock absolute top-3 left-3 text-gray-400"></i>
-        {{ form.password1|add_class:"w-full pl-10 pr-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Password" }}
+        {{ form.password1|add_class:"peer w-full pl-10 pr-10 border rounded-xl px-3 pt-5 pb-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder: " }}
+        <label for="id_password1" class="absolute left-10 top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-blue-600">
+          Password
+        </label>
         <button type="button" onclick="togglePassword('id_password1','toggleIcon1')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
           <i id="toggleIcon1" class="fa-solid fa-eye"></i>
         </button>
+        <div id="strengthBar" class="h-1 rounded mt-1 bg-gray-200 overflow-hidden">
+          <div id="strengthFill" class="h-full w-0 transition-all duration-300"></div>
+        </div>
+        {% if form.password1.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.password1.errors.0 }}</p>
+        {% endif %}
       </div>
 
       <!-- Confirm Password -->
       <div class="relative">
         <i class="fa-solid fa-lock absolute top-3 left-3 text-gray-400"></i>
-        {{ form.password2|add_class:"w-full pl-10 pr-10 border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder:Confirm Password" }}
+        {{ form.password2|add_class:"peer w-full pl-10 pr-10 border rounded-xl px-3 pt-5 pb-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"|attr:"placeholder: " }}
+        <label for="id_password2" class="absolute left-10 top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-blue-600">
+          Confirm Password
+        </label>
         <button type="button" onclick="togglePassword('id_password2','toggleIcon2')" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
           <i id="toggleIcon2" class="fa-solid fa-eye"></i>
         </button>
+        {% if form.password2.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.password2.errors.0 }}</p>
+        {% endif %}
       </div>
 
       <!-- Submit Button -->
@@ -60,23 +88,75 @@
     </p>
 
   </div>
+
+  <!-- Success Animation -->
+  <div id="successCard" class="hidden flex flex-col items-center justify-center">
+    <div class="rounded-full bg-green-100 p-6 shadow-lg">
+      <svg class="w-24 h-24 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+        <path class="checkmark-path" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    <h2 class="text-2xl font-semibold mt-6 text-gray-800">Account Created Successfully!</h2>
+    <p class="text-gray-600 mt-2">Redirecting you to login...</p>
+  </div>
+
 </div>
 
 {% block scripts %}
+<style>
+  .checkmark-path {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: draw 1s ease forwards;
+  }
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+</style>
+
 <script>
   function togglePassword(fieldId, iconId) {
     const field = document.getElementById(fieldId);
     const icon = document.getElementById(iconId);
     if (field.type === "password") {
       field.type = "text";
-      icon.classList.remove("fa-eye");
-      icon.classList.add("fa-eye-slash");
+      icon.classList.replace("fa-eye","fa-eye-slash");
     } else {
       field.type = "password";
-      icon.classList.remove("fa-eye-slash");
-      icon.classList.add("fa-eye");
+      icon.classList.replace("fa-eye-slash","fa-eye");
     }
   }
+
+  // Password strength bar
+  const passwordField = document.getElementById("id_password1");
+  const strengthFill = document.getElementById("strengthFill");
+  if (passwordField) {
+    passwordField.addEventListener("input", () => {
+      const val = passwordField.value;
+      let strength = 0;
+      if (val.length > 5) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
+      const colors = ["bg-red-500","bg-yellow-500","bg-blue-500","bg-green-500"];
+      strengthFill.className = `h-full transition-all duration-300 ${colors[strength-1] || ""}`;
+      strengthFill.style.width = `${strength * 25}%`;
+    });
+  }
+
+  // Show success animation on form submit
+  const form = document.getElementById("registerForm");
+  const formCard = document.getElementById("formCard");
+  const successCard = document.getElementById("successCard");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault(); // prevent immediate submit
+    formCard.classList.add("hidden");
+    successCard.classList.remove("hidden");
+    setTimeout(() => {
+      form.submit(); // actually submit after animation
+    }, 2000);
+  });
 </script>
 {% endblock %}
 {% endblock %}

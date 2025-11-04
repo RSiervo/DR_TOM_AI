@@ -2,58 +2,61 @@
 {% block title %} — Analyze{% endblock %}
 
 {% block content %}
-<section class="grid md:grid-cols-2 gap-10 items-start py-6">
+<section class="grid md:grid-cols-2 gap-12 items-start py-10 px-4">
 
   <!-- Hero / Explainer -->
-  <div data-aos="fade-right">
-    <h1 class="text-4xl font-extrabold mb-4 text-gray-800">
+  <div data-aos="fade-right" class="space-y-6">
+    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">
       <i class="fa-solid fa-stethoscope text-blue-600 mr-2"></i> Symptom & Image Analyzer
     </h1>
-    <p class="text-slate-600 mb-6 leading-relaxed">
-      Dr. Tom AI uses <span class="font-semibold text-blue-600">Gemini 1.5 Flash</span> to analyze your description and (optionally) a photo.  
-      You’ll get <span class="font-semibold">possible causes</span>, <span class="font-semibold">self-care tips</span>,  
-      <span class="font-semibold">red flags</span>, and <span class="font-semibold">next steps</span>.
+    <p class="text-lg text-slate-600 leading-relaxed">
+      <span class="font-semibold text-blue-600">Dr. Tom AI</span> uses 
+      <span class="font-semibold">Gemini 1.5 Flash</span> to analyze your description and (optionally) a photo.  
+      You’ll receive <span class="font-semibold">possible causes</span>, <span class="font-semibold">self-care tips</span>,  
+      <span class="font-semibold">red flags</span>, and <span class="font-semibold">recommended next steps</span>.
     </p>
-    <ul class="space-y-3 text-slate-700">
-      <li><i class="fa-solid fa-bolt mr-2 text-blue-600"></i>Fast, multimodal AI analysis</li>
-      <li><i class="fa-solid fa-shield-heart mr-2 text-blue-600"></i>Your data stays private</li>
-      <li><i class="fa-solid fa-circle-info mr-2 text-blue-600"></i><strong>Not a diagnosis</strong> — educational only</li>
+    <ul class="space-y-3 text-slate-700 text-base">
+      <li><i class="fa-solid fa-bolt mr-2 text-blue-600"></i> Fast multimodal AI analysis</li>
+      <li><i class="fa-solid fa-shield-heart mr-2 text-blue-600"></i> Your data stays private</li>
+      <li><i class="fa-solid fa-circle-info mr-2 text-blue-600"></i> <strong>Not a diagnosis</strong> — educational only</li>
     </ul>
   </div>
 
   <!-- Form Card -->
-  <div class="bg-white/80 backdrop-blur-md border border-gray-100 rounded-2xl shadow-xl p-6" data-aos="fade-left">
-    <form method="post" enctype="multipart/form-data" class="space-y-5">
+  <div class="bg-white/80 backdrop-blur border border-gray-100 rounded-2xl shadow-xl p-8" data-aos="fade-left">
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
       {% csrf_token %}
 
       <!-- Symptom Input -->
       <div>
-        <label class="font-semibold block mb-1">Describe your symptoms (optional)</label>
+        <label for="symptoms" class="font-semibold text-gray-800 block mb-2">Describe your symptoms</label>
         <textarea 
+          id="symptoms"
           name="symptoms_text"
           placeholder="e.g. Red rash on arm, itchy for 2 days"
           rows="4"
-          class="w-full border rounded-xl px-3 py-3 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition resize-none"></textarea>
+          class="w-full border rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition resize-none"></textarea>
       </div>
 
       <!-- Image Upload -->
       <div>
-        <label class="font-semibold block mb-1">Upload a photo (optional)</label>
-        <div id="dropzone" class="border-2 border-dashed rounded-xl p-5 text-center hover:bg-slate-50 transition cursor-pointer">
+        <label for="imageInput" class="font-semibold text-gray-800 block mb-2">Upload a photo (optional)</label>
+        <div id="dropzone" class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-slate-50 transition cursor-pointer">
           <input id="imageInput" type="file" name="image" accept="image/*" class="hidden">
           <p class="text-sm text-slate-600"><i class="fa-regular fa-image mr-1"></i> Drag & drop or click to upload</p>
           <img id="preview" class="mt-4 max-h-64 mx-auto rounded-xl hidden shadow-md" alt="Preview">
         </div>
-        <p class="text-xs text-slate-500 mt-2">💡 Use clear photos in good lighting, avoid personal identifiers.</p>
+        <p class="text-xs text-slate-500 mt-2">💡 Use clear photos in good lighting. Avoid personal identifiers.</p>
       </div>
 
       <!-- Analyze Button -->
-      <button id="analyzeBtn" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white font-semibold py-3 hover:bg-blue-700 shadow-md transition transform hover:-translate-y-1 hover:shadow-lg">
+      <button id="analyzeBtn" type="submit"
+        class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white font-semibold py-3 hover:bg-blue-700 shadow-md transition transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
         <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze
       </button>
 
       <!-- Loading Spinner -->
-      <div id="loading" class="hidden text-center mt-4 text-blue-600">
+      <div id="loading" class="hidden text-center mt-4 text-blue-600 font-medium">
         <i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing your input...
       </div>
     </form>
@@ -61,9 +64,11 @@
 </section>
 
 {% if result %}
-<section class="mt-12" data-aos="fade-up">
-  <h2 class="text-2xl font-bold mb-4 text-gray-800"><i class="fa-solid fa-clipboard-list mr-2 text-blue-600"></i> Results</h2>
-  <article class="prose max-w-none bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-gray-100">
+<section class="mt-14 px-4" data-aos="fade-up">
+  <h2 class="text-2xl font-bold mb-4 text-gray-900 flex items-center">
+    <i class="fa-solid fa-clipboard-list mr-2 text-blue-600"></i> Results
+  </h2>
+  <article class="prose prose-blue max-w-none bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-gray-100">
     {{ result|linebreaks }}
   </article>
 </section>
@@ -76,6 +81,7 @@
   const preview = document.getElementById('preview');
   const analyzeBtn = document.getElementById('analyzeBtn');
   const loading = document.getElementById('loading');
+  const symptoms = document.getElementById('symptoms');
 
   // Dropzone click
   drop.addEventListener('click', () => input.click());
@@ -110,8 +116,34 @@
     reader.readAsDataURL(file);
   }
 
-  // Show loading when analyzing
-  analyzeBtn.addEventListener('click', () => {
+  // Validate before analyzing
+  analyzeBtn.addEventListener('click', (e) => {
+    const hasSymptoms = symptoms.value.trim() !== "";
+    const hasImage = input.files.length > 0;
+
+    if (!hasSymptoms && !hasImage) {
+      e.preventDefault(); // stop form submit
+      loading.classList.add('hidden');
+
+      // Tailwind-friendly inline alert
+      if (!document.getElementById('alertBox')) {
+        const alert = document.createElement('div');
+        alert.id = 'alertBox';
+        alert.className = "mt-4 p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 text-sm flex items-center gap-2";
+        alert.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 
+                           Please provide <strong>symptoms</strong> or an <strong>image</strong> before analyzing.`;
+        analyzeBtn.insertAdjacentElement('afterend', alert);
+
+        // Auto fade-out after 4 seconds
+        setTimeout(() => {
+          alert.classList.add("opacity-0", "transition", "duration-700");
+          setTimeout(() => alert.remove(), 700);
+        }, 4000);
+      }
+      return;
+    }
+
+    // show loading if valid
     loading.classList.remove('hidden');
   });
 </script>

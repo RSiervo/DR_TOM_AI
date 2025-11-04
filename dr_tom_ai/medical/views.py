@@ -10,6 +10,7 @@ from ai_core.gemini import analyze
 import io
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.db.models import Q
 
 def privacy_view(request):
     return render(request, "privacy.html")
@@ -49,9 +50,29 @@ def analyze_view(request):
 
 @login_required
 def history_view(request):
-    items = Consultation.objects.filter(user=request.user).order_by("-created_at")[:100]
-    return render(request, "medical/history.html", {"items": items})
+    query = request.GET.get("q", "")  # search input
+    date_filter = request.GET.get("date", "")  # filter by date
 
+    items = Consultation.objects.filter(user=request.user)
+
+    # Apply search filter
+    if query:
+        items = items.filter(
+            Q(disease_name__icontains=query) |
+            Q(notes__icontains=query)
+        )
+
+    # Apply date filter
+    if date_filter:
+        items = items.filter(created_at__date=date_filter)
+
+    items = items.order_by("-created_at")[:100]
+
+    return render(request, "medical/history.html", {
+        "items": items,
+        "query": query,
+        "date_filter": date_filter,
+    })
 
 @login_required
 def consultation_detail(request, pk):

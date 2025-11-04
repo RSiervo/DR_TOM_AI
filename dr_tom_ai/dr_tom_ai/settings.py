@@ -7,7 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")  # load GOOGLE_API_KEY if present
 
 SECRET_KEY = "replace-this"  # dev only
-DEBUG = True
+DEBUG = False
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
+#ALLOWED_HOSTS = ['extraordinarytom.pythonanywhere.com']
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.10.30.52']
 
 INSTALLED_APPS = [
@@ -50,6 +53,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Optional: basic security headers for prod later
 CSRF_TRUSTED_ORIGINS = []
