@@ -32,6 +32,6 @@ It helps users analyze **symptoms**, **images**, and **medical descriptions** fo
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/DR_TOM_AI.git
+   git clone https://github.com/RSiervo/DR_TOM_AI.git
    cd DR_TOM_AI
 
