@@ -1,0 +1,16 @@
+[build]
+builder = "NIXPACKS"
+
+[phases.setup]
+commands = ["pip install -r requirements.txt"]
+
+[phases.build]
+commands = ["python manage.py collectstatic --noinput"]
+
+[start]
+cmd = "gunicorn dr_tom_ai.wsgi"
+
+[env]
+PYTHONPATH = "/app"
+DJANGO_SETTINGS_MODULE = "dr_tom_ai.settings"
+PORT = "8000"
