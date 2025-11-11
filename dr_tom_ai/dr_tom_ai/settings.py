@@ -75,10 +75,12 @@ WSGI_APPLICATION = 'dr_tom_ai.wsgi.application'
 # ------------------------------------------------
 DATABASES = {
     'default': dj_database_url.config(
-        default=f"postgresql://postgres:{os.getenv('SUPABASE_PASSWORD')}@{os.getenv('SUPABASE_HOST')}:5432/postgres",
-        conn_max_age=600, ssl_require=True
+        default="postgresql://postgres:$i3rv0T0m@db.prtvrkypphxtgkdcmbuo.supabase.co:5432/postgres",
+        conn_max_age=600,
+        ssl_require=True
     )
 }
+
 
 # ------------------------------------------------
 # 🖼️ Static / Media
